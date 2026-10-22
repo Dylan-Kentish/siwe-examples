@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui/card';
 
 import { getServerSession } from '../api/auth/options';
 

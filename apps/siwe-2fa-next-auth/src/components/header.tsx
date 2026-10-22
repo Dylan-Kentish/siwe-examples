@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 
 import { AccountButton } from './account-button';
-import { Button } from './ui/button';
+import { Button } from '@repo/ui/button';
 
 export const Header: React.FC = () => {
   return (

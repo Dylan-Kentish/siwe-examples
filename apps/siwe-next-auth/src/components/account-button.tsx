@@ -5,7 +5,7 @@ import React from 'react';
 import { useAppKit } from '@reown/appkit/react';
 import { useSession } from 'next-auth/react';
 
-import { Button } from './ui/button';
+import { Button } from '@repo/ui/button';
 
 export const AccountButton: React.FC = () => {
   const { open } = useAppKit();

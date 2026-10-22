@@ -1,0 +1,83 @@
+// Shared by every app in this repo. They all use the same database,
+// so this schema must include every app's tables.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// `id` is the wallet address.
+model User {
+  id      String @id @default(cuid())
+  chainId Int
+  role    Role   @default(USER)
+
+  // siwe-2fa-next-auth: pending WebAuthn challenge
+  currentChallenge String?
+
+  accounts Account[]
+  totp     TOTP[]
+  passKeys PassKey[]
+}
+
+// siwe-link-accounts-next-auth: linked OAuth accounts
+model Account {
+  provider          String
+  providerAccountId String
+  name              String?
+  image             String?
+  linkedAt          DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@id([provider, providerAccountId])
+}
+
+// siwe-2fa-next-auth: authenticator app codes
+model TOTP {
+  id   String @id @default(cuid())
+  name String
+
+  secret   String  @unique
+  verified Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, id])
+}
+
+// siwe-2fa-next-auth: passkeys
+model PassKey {
+  id   String @id @default(cuid())
+  name String
+
+  credentialID         Bytes   @unique
+  credentialPublicKey  Bytes
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, id])
+}

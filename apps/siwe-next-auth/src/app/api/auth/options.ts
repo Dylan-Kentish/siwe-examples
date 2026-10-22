@@ -1,13 +1,11 @@
 import 'server-only';
 
-import { getAddressFromMessage, getChainIdFromMessage, verifySignature } from '@reown/appkit-siwe';
 import { type NextAuthOptions, getServerSession as getServerSessionInternal } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
-import { env } from '@/env.mjs';
-import { prisma } from '@/server/db';
+import { siweCredentials, verifySiweCredentials } from '@repo/siwe/server';
 
-const projectId = env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
+import { prisma } from '@/server/db';
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -18,42 +16,16 @@ export const authOptions: NextAuthOptions = {
     Credentials({
       id: 'siwe',
       name: 'SIWE',
-      credentials: {
-        message: {
-          label: 'Message',
-          type: 'text',
-          placeholder: '0x0',
-        },
-        signature: {
-          label: 'Signature',
-          type: 'text',
-          placeholder: '0x0',
-        },
-        csrfToken: {
-          label: 'CSRF Token',
-          type: 'text',
-          placeholder: '0x0',
-        },
-      },
+      credentials: siweCredentials,
       async authorize(credentials, req) {
         try {
           if (!credentials) throw new Error('No credentials');
           if (!req.headers) throw new Error('No headers');
 
-          const { message, signature } = credentials;
-          const address = getAddressFromMessage(message);
-          const chainId = getChainIdFromMessage(message);
-          const isValid = await verifySignature({
-            address,
-            message,
-            signature,
-            chainId,
-            projectId,
-          });
+          const verified = await verifySiweCredentials(credentials.message, credentials.signature);
 
-          const chain = Number(chainId.split(':')[1]);
-
-          if (isValid) {
+          if (verified) {
+            const { address, chainId: chain } = verified;
             const dbUser = await prisma.user.upsert({
               where: {
                 id: address,

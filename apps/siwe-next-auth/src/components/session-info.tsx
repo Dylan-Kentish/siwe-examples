@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Session } from 'next-auth';
 
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui/card';
 
 function secondsSinceEpochToDate(secondsSinceEpoch: number) {
   return new Date(secondsSinceEpoch * 1000);

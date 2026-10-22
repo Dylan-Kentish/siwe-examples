@@ -1,7 +1,8 @@
 import Link from 'next/link';
 
+import { Button } from '@repo/ui/button';
+
 import { AccountButton } from './account-button';
-import { Button } from './ui/button';
 
 export const Header: React.FC = () => {
   return (

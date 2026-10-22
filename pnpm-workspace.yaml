@@ -1,0 +1,56 @@
+packages:
+  - apps/*
+  - packages/*
+
+# One version of each shared dependency across every app.
+allowBuilds:
+  '@prisma/client': true
+  '@prisma/engines': true
+  '@reown/appkit': false
+  bufferutil: false
+  cbor-extract: false
+  keccak: false
+  prisma: true
+  sharp: true
+  unrs-resolver: false
+  utf-8-validate: false
+
+catalog:
+  '@prisma/client': ^5.22.0
+  prisma: ^5.22.0
+  '@reown/appkit': ^1.8.24
+  '@reown/appkit-adapter-wagmi': ^1.8.24
+  '@reown/appkit-siwe': ^1.8.24
+  # Must stay on wagmi 2's core; the AppKit adapter's peer range would otherwise pull 3.x.
+  '@wagmi/core': ^2.22.1
+  '@t3-oss/env-nextjs': ^0.11.0
+  '@tanstack/react-query': ^5.51.21
+  '@tanstack/react-query-next-experimental': ^5.51.21
+  next: ^14.2.5
+  next-auth: ^4.24.7
+  react: ^18.3.1
+  react-dom: 18.3.1
+  viem: ^2.55.13
+  wagmi: ^2.19.5
+  zod: ^3.23.8
+  '@types/node': ^22.1.0
+  '@types/react': ^18.3.3
+  '@types/react-dom': ^18.3.0
+  typescript: ^5.5.4
+  eslint: ^8.57.0
+  eslint-config-next: ^14.2.5
+  prettier: ^3.3.3
+  tailwindcss: ^3.4.7
+
+# Hoist lint/format plugins so shared configs in @repo/config resolve them.
+publicHoistPattern:
+  - '*eslint*'
+  - '*prettier*'
+
+# Keep the whole tree on wagmi 2 (wagmi 2.19.5 ships with these exact versions).
+# Without this, AppKit's open-ended ranges pull wagmi 3's core and connectors.
+overrides:
+  '@wagmi/core': 2.22.1
+  '@wagmi/connectors': 6.2.0
+  # 1.53+ statically imports optional @x402/* packages, which breaks the Next build.
+  '@coinbase/cdp-sdk': 1.52.0

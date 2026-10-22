@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["NODE_ENV", "VERCEL", "VERCEL_URL", "SKIP_ENV_VALIDATION"],
+  "tasks": {
+    "db:generate": {
+      "cache": false
+    },
+    "build": {
+      "dependsOn": ["^build", "^db:generate"],
+      "env": ["DATABASE_URL", "DATABASE_URL_UNPOOLED", "NEXTAUTH_URL", "NEXTAUTH_SECRET", "NEXT_PUBLIC_*", "TWITTER_*", "VERIFIED_DOMAIN"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^db:generate"]
+    },
+    "lint": {
+      "dependsOn": ["^db:generate"]
+    },
+    "dev": {
+      "dependsOn": ["^db:generate"],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

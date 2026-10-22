@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { getServerSession } from '@/app/api/auth/options';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui/card';
 
 function secondsSinceEpochToDate(secondsSinceEpoch: number) {
   return new Date(secondsSinceEpoch * 1000);

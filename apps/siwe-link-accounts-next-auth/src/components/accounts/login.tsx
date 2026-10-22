@@ -2,7 +2,7 @@
 
 import { signIn } from 'next-auth/react';
 
-import { Button } from '../ui/button';
+import { Button } from '@repo/ui/button';
 
 export const Login: React.FC<{ provider: string }> = ({ provider }) => {
   function handleLogin() {

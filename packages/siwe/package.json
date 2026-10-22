@@ -1,0 +1,41 @@
+{
+  "name": "@repo/siwe",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./wagmi": "./src/wagmi.ts",
+    "./providers": "./src/providers.tsx",
+    "./server": "./src/server.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@reown/appkit": "catalog:",
+    "@reown/appkit-adapter-wagmi": "catalog:",
+    "@reown/appkit-siwe": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-next-experimental": "catalog:",
+    "@wagmi/core": "catalog:",
+    "server-only": "^0.0.1",
+    "viem": "catalog:",
+    "wagmi": "catalog:"
+  },
+  "peerDependencies": {
+    "next": "catalog:",
+    "next-auth": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@types/react": "catalog:",
+    "next": "catalog:",
+    "next-auth": "catalog:",
+    "react": "catalog:",
+    "typescript": "catalog:",
+    "zod": "catalog:",
+    "react-dom": "catalog:"
+  }
+}

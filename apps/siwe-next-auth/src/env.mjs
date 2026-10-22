@@ -22,6 +22,8 @@ const env = createEnv({
     NEXT_PUBLIC_ALCHEMY_API_KEY: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
   },
+  skipValidation:
+    !!process.env.SKIP_ENV_VALIDATION && !['0', 'false'].includes(process.env.SKIP_ENV_VALIDATION),
 });
 
 export { env };

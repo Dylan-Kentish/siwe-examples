@@ -16,8 +16,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+} from '@repo/ui/alert-dialog';
+import { Button } from '@repo/ui/button';
 
 export const Remove: React.FC<{ id: string }> = ({ id }) => {
   const [isPending, startTransition] = useTransition();

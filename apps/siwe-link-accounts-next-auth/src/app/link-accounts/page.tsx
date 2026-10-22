@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 
 import { LinkAccount } from '@/components/accounts/link-account';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui/card';
 
 const Page: NextPage = async () => {
   return (

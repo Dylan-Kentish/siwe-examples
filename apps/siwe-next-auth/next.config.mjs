@@ -4,6 +4,7 @@ import './src/env.mjs';
 const config = {
   reactStrictMode: true,
   logging: { fetches: { fullUrl: true } },
+  transpilePackages: ['@repo/db', '@repo/siwe', '@repo/ui'],
   experimental: {
     webpackBuildWorker: true,
   },

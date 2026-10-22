@@ -5,13 +5,11 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { headers } from 'next/headers';
-import { cookieToInitialState } from 'wagmi';
+
+import { Web3Providers } from '@repo/siwe/providers';
+import { getInitialState } from '@repo/siwe/wagmi';
 
 import { Header } from '@/components/header';
-import { QueryProvider } from '@/components/providers/query';
-import { SessionProvider } from '@/components/providers/session';
-import { WagmiProvider } from '@/components/providers/wagmi';
-import { config } from '@/lib/wagmi';
 
 import { getServerSession } from './api/auth/options';
 
@@ -22,27 +20,30 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
+const appMetadata = {
+  name: 'SIWE + Next Auth',
+  description: 'SIWE + Next Auth Example',
+  url: 'https://siwe-next-auth.vercel.app',
+  icons: ['https://siwe-next-auth.vercel.app/siwe.png'],
+};
+
 // ====================
 
 const RootLayout: React.FC<React.PropsWithChildren> = async ({ children }) => {
-  const initialState = cookieToInitialState(config.wagmiConfig, headers().get('cookie'));
+  const initialState = getInitialState(headers().get('cookie'));
   const session = await getServerSession();
 
   return (
     <html lang="en" className="dark min-h-screen">
       <body className={`${inter.variable} font-inter`}>
-        <SessionProvider session={session}>
-          <QueryProvider>
-            <WagmiProvider initialState={initialState}>
-              <main>
-                <Header />
-                <div className="flex h-full w-full items-start justify-center p-5 pt-[15vh]">
-                  {children}
-                </div>
-              </main>
-            </WagmiProvider>
-          </QueryProvider>
-        </SessionProvider>
+        <Web3Providers metadata={appMetadata} session={session} initialState={initialState}>
+          <main>
+            <Header />
+            <div className="flex h-full w-full items-start justify-center p-5 pt-[15vh]">
+              {children}
+            </div>
+          </main>
+        </Web3Providers>
       </body>
     </html>
   );

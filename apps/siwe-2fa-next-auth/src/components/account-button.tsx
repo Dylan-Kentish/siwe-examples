@@ -10,7 +10,7 @@ import { useLogin } from '@/hooks/use-login';
 import { useLogout } from '@/hooks/use-logout';
 
 import { use2FA } from './providers/2fa';
-import { Button } from './ui/button';
+import { Button } from '@repo/ui/button';
 import {
   Dialog,
   DialogContent,

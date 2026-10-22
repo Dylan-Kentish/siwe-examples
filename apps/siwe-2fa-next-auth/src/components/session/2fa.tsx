@@ -4,7 +4,7 @@ import { Register as RegisterPasskey } from '@/components/2fa/passkeys/register'
 import { PassKeysTable } from '@/components/2fa/tables/passkeys';
 import { VerificationCodesTable } from '@/components/2fa/tables/totp';
 import { Register as RegisterTOTP } from '@/components/2fa/totp/register';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui/card';
 
 export const TwoFA: React.FC = () => {
   return (
