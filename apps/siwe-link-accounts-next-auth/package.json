@@ -26,6 +26,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@prisma/nextjs-monorepo-workaround-plugin": "catalog:",
     "@repo/config": "workspace:*",
     "@types/eslint": "^8.56.10",
     "@types/node": "catalog:",

@@ -38,6 +38,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@prisma/nextjs-monorepo-workaround-plugin": "catalog:",
     "@repo/config": "workspace:*",
     "@simplewebauthn/typescript-types": "^8.3.4",
     "@types/eslint": "^8.56.10",
