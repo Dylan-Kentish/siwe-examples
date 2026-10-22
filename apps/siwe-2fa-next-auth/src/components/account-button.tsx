@@ -2,15 +2,16 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react';
+import { useAppKit, useAppKitState } from '@reown/appkit/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+
+import { Button } from '@repo/ui/button';
 
 import { useLogin } from '@/hooks/use-login';
 import { useLogout } from '@/hooks/use-logout';
 
 import { use2FA } from './providers/2fa';
-import { Button } from '@repo/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -27,8 +28,8 @@ export const AccountButton: React.FC = () => {
 
   const [selectMethodOpen, setSelectMethodOpen] = useState(false);
   const { data: session, status: sessionStatus } = useSession();
-  const { open } = useWeb3Modal();
-  const { open: isOpen } = useWeb3ModalState();
+  const { open } = useAppKit();
+  const { open: isOpen } = useAppKitState();
   const { siwpkAsync } = useLogin();
   const { logoutAsync } = useLogout();
 

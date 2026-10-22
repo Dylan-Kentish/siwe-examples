@@ -5,7 +5,7 @@ import {
   generateRegistrationOptions,
   verifyRegistrationResponse,
 } from '@simplewebauthn/server';
-import { type RegistrationResponseJSON } from '@simplewebauthn/server/script/deps';
+import type { RegistrationResponseJSON } from '@simplewebauthn/typescript-types';
 import { revalidatePath } from 'next/cache';
 
 import { getServerSession, webauthnSettings, rpName } from '@/app/api/auth/options';

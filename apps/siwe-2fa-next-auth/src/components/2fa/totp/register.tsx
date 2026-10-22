@@ -7,8 +7,9 @@ import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { create, register, rename } from '@/actions/totp';
 import { Button } from '@repo/ui/button';
+
+import { create, register, rename } from '@/actions/totp';
 import {
   Dialog,
   DialogContent,

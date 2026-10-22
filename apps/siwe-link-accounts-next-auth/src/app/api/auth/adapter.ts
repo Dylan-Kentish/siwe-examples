@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Adapter } from 'next-auth/adapters';
+import type { Adapter, AdapterAccount } from 'next-auth/adapters';
 
 import { prisma } from '@/server/db';
 
@@ -45,7 +45,7 @@ export function SIWEAdapter(): Adapter {
 
       return accountData.user;
     },
-    async linkAccount({ userId, provider, providerAccountId }) {
+    async linkAccount({ userId, provider, providerAccountId }: AdapterAccount) {
       await prisma.user.update({
         where: {
           id: userId,

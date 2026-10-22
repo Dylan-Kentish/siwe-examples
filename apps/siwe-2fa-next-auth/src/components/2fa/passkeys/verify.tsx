@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
-import { hasPasskey } from '@/actions/passkeys';
 import { Button } from '@repo/ui/button';
+
+import { hasPasskey } from '@/actions/passkeys';
 import { usePassKey } from '@/hooks/use-passkey';
 
 type Props = {

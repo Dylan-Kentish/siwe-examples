@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
           if (!credentials) throw new Error('No credentials');
           if (!req.headers) throw new Error('No headers');
 
-          const verified = await verifySiweCredentials(credentials.message, credentials.signature);
+          const verified = await verifySiweCredentials(credentials, req.headers);
 
           if (verified) {
             const { address, chainId: chain } = verified;

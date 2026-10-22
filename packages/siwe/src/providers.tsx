@@ -9,7 +9,7 @@ import type { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import { type State, WagmiProvider } from 'wagmi';
 
-import { siweConfig } from './siwe-config';
+import { createSiweConfig, type SiweOptions } from './siwe-config';
 import { networks, projectId, wagmiAdapter } from './wagmi';
 
 export type AppMetadata = {
@@ -23,12 +23,12 @@ const queryClient = new QueryClient();
 
 let appKitCreated = false;
 
-function ensureAppKit(metadata: AppMetadata) {
+function ensureAppKit(metadata: AppMetadata, siwe?: SiweOptions) {
   if (appKitCreated) return;
   appKitCreated = true;
 
   createAppKit({
-    siweConfig,
+    siweConfig: createSiweConfig(siwe),
     adapters: [wagmiAdapter],
     networks: [networks[0]!, ...networks.slice(1)],
     metadata,
@@ -43,13 +43,20 @@ function ensureAppKit(metadata: AppMetadata) {
 
 type Web3ProvidersProps = PropsWithChildren<{
   metadata: AppMetadata;
+  siwe?: SiweOptions;
   session?: Session | null;
   initialState?: State;
 }>;
 
 /** next-auth session + react-query + wagmi + Reown AppKit (with SIWE). */
-export function Web3Providers({ metadata, session, initialState, children }: Web3ProvidersProps) {
-  ensureAppKit(metadata);
+export function Web3Providers({
+  metadata,
+  siwe,
+  session,
+  initialState,
+  children,
+}: Web3ProvidersProps) {
+  ensureAppKit(metadata, siwe);
 
   return (
     <SessionProvider session={session}>

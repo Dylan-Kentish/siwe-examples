@@ -1,16 +1,13 @@
 import 'server-only';
 
-import { ethers } from 'ethers';
 import { type NextAuthOptions, getServerSession as getServerSessionInternal } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import TwitterProvider from 'next-auth/providers/twitter';
-import { getCsrfToken } from 'next-auth/react';
-import { SiweMessage } from 'siwe';
+
+import { siweCredentials, verifySiweCredentials } from '@repo/siwe/server';
 
 import { env } from '@/env.mjs';
 import { prisma } from '@/server/db';
-
-const projectId = env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
 
 import { SIWEAdapter } from './adapter';
 
@@ -24,51 +21,26 @@ export const authOptions: NextAuthOptions = {
     Credentials({
       id: 'siwe',
       name: 'SIWE',
-      credentials: {
-        message: {
-          label: 'Message',
-          type: 'text',
-          placeholder: '0x0',
-        },
-        signature: {
-          label: 'Signature',
-          type: 'text',
-          placeholder: '0x0',
-        },
-      },
+      credentials: siweCredentials,
       async authorize(credentials, req) {
         try {
           if (!credentials) throw new Error('No credentials');
           if (!req.headers) throw new Error('No headers');
 
-          const siwe = new SiweMessage(credentials.message);
-          const provider = new ethers.JsonRpcProvider(
-            `https://rpc.walletconnect.com/v1?chainId=eip155:${siwe.chainId}&projectId=${projectId}`
-          );
-          const nonce = await getCsrfToken({ req: { headers: req.headers } });
+          const verified = await verifySiweCredentials(credentials, req.headers);
 
-          const result = await siwe.verify(
-            {
-              signature: credentials.signature,
-              domain: req.headers.host,
-              nonce,
-            },
-            {
-              provider,
-            }
-          );
-
-          if (result.success) {
+          if (verified) {
+            const { address, chainId } = verified;
             const dbUser = await prisma.user.upsert({
               where: {
-                id: siwe.address,
+                id: address,
               },
               update: {
-                chainId: siwe.chainId,
+                chainId: chainId,
               },
               create: {
-                id: siwe.address,
-                chainId: siwe.chainId,
+                id: address,
+                chainId: chainId,
               },
               select: {
                 role: true,
@@ -76,8 +48,8 @@ export const authOptions: NextAuthOptions = {
             });
 
             return {
-              id: siwe.address,
-              chainId: siwe.chainId,
+              id: address,
+              chainId: chainId,
               role: dbUser.role,
             };
           } else {

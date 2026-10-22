@@ -2,9 +2,7 @@
 
 import { useTransition } from 'react';
 
-import { type Account as dbAccount } from '@prisma/client';
-
-import { unlinkAccount } from '@/actions/account';
+import type { Account as dbAccount } from '@repo/db/types';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +15,8 @@ import {
   AlertDialogTrigger,
 } from '@repo/ui/alert-dialog';
 import { Button } from '@repo/ui/button';
+
+import { unlinkAccount } from '@/actions/account';
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 

@@ -5,31 +5,23 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "lint": "SKIP_ENV_VALIDATION=1 next lint",
+    "lint:fix": "SKIP_ENV_VALIDATION=1 next lint --fix",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@radix-ui/react-slot": "^1.1.0",
     "@reown/appkit": "catalog:",
     "@repo/db": "workspace:*",
     "@repo/siwe": "workspace:*",
     "@repo/ui": "workspace:*",
     "@t3-oss/env-nextjs": "catalog:",
-    "@tanstack/react-query": "catalog:",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.424.0",
     "next": "catalog:",
     "next-auth": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "server-only": "^0.0.1",
     "sharp": "^0.33.4",
-    "tailwind-merge": "^2.4.0",
-    "viem": "catalog:",
-    "wagmi": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

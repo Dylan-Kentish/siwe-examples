@@ -1,8 +1,7 @@
 import 'server-only';
 
 import { verifyAuthenticationResponse } from '@simplewebauthn/server';
-import { AuthenticationResponseJSON } from '@simplewebauthn/server/script/deps';
-import { ethers } from 'ethers';
+import type { AuthenticationResponseJSON } from '@simplewebauthn/typescript-types';
 import { headers } from 'next/headers';
 import {
   type NextAuthOptions,
@@ -11,15 +10,13 @@ import {
   RequestInternal,
 } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { getCsrfToken } from 'next-auth/react';
 import { authenticator } from 'otplib';
-import { SiweMessage } from 'siwe';
+
+import { siweCredentials, verifySiweCredentials } from '@repo/siwe/server';
 
 import { env } from '@/env.mjs';
 import { fromBase64, toBase64 } from '@/lib/convert';
 import { prisma } from '@/server/db';
-
-const projectId = env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
 
 export const rpName = 'SIWE + WEBAUTHN + NEXT-AUTH';
 
@@ -219,49 +216,24 @@ export const authOptions: NextAuthOptions = {
     Credentials({
       id: 'siwe',
       name: 'SIWE',
-      credentials: {
-        message: {
-          label: 'Message',
-          type: 'text',
-          placeholder: '0x0',
-        },
-        signature: {
-          label: 'Signature',
-          type: 'text',
-          placeholder: '0x0',
-        },
-      },
+      credentials: siweCredentials,
       async authorize(credentials, req) {
         try {
           if (!credentials) throw new Error('No credentials');
           if (!req.headers) throw new Error('No headers');
 
-          const siwe = new SiweMessage(credentials.message);
-          const provider = new ethers.JsonRpcProvider(
-            `https://rpc.walletconnect.com/v1?chainId=eip155:${siwe.chainId}&projectId=${projectId}`
-          );
-          const nonce = await getCsrfToken({ req: { headers: req.headers } });
+          const verified = await verifySiweCredentials(credentials, req.headers);
 
-          const result = await siwe.verify(
-            {
-              signature: credentials.signature,
-              domain: req.headers.host,
-              nonce,
-            },
-            {
-              provider,
-            }
-          );
-
-          if (result.success) {
+          if (verified) {
+            const { address, chainId } = verified;
             const user = await prisma.user.upsert({
               where: {
-                id: siwe.address,
+                id: address,
               },
               update: {},
               create: {
-                id: siwe.address,
-                chainId: siwe.chainId,
+                id: address,
+                chainId: chainId,
               },
               select: {
                 id: true,
@@ -282,7 +254,7 @@ export const authOptions: NextAuthOptions = {
             return {
               id: user.id,
               role: user.role,
-              chainId: siwe.chainId,
+              chainId: chainId,
               is2FAEnabled: user._count.totp > 0 || user._count.passKeys > 0,
             };
           } else {

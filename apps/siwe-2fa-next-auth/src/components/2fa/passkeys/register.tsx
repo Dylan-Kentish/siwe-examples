@@ -7,8 +7,9 @@ import { startRegistration } from '@simplewebauthn/browser';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { create, register, rename } from '@/actions/passkeys';
 import { Button } from '@repo/ui/button';
+
+import { create, register, rename } from '@/actions/passkeys';
 import {
   Dialog,
   DialogContent,

@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { list } from '@/actions/totp';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -17,6 +16,8 @@ import {
   AlertDialogTrigger,
 } from '@repo/ui/alert-dialog';
 import { Button } from '@repo/ui/button';
+
+import { list } from '@/actions/totp';
 import {
   Form,
   FormControl,

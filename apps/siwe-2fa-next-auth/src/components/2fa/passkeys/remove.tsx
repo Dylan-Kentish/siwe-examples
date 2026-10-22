@@ -4,8 +4,6 @@ import { useTransition } from 'react';
 
 import { Trash } from 'lucide-react';
 
-import { remove } from '@/actions/passkeys';
-import { use2FA } from '@/components/providers/2fa';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,6 +16,9 @@ import {
   AlertDialogTrigger,
 } from '@repo/ui/alert-dialog';
 import { Button } from '@repo/ui/button';
+
+import { remove } from '@/actions/passkeys';
+import { use2FA } from '@/components/providers/2fa';
 
 export const Remove: React.FC<{ id: string }> = ({ id }) => {
   const [isPending, startTransition] = useTransition();

@@ -1,7 +1,5 @@
 'use client';
 
-import { Verify as VerifyPasskey } from '@/components/2fa/passkeys/verify';
-import { Verify as VerifyTOTP } from '@/components/2fa/totp/verify';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -10,6 +8,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@repo/ui/alert-dialog';
+
+import { Verify as VerifyPasskey } from '@/components/2fa/passkeys/verify';
+import { Verify as VerifyTOTP } from '@/components/2fa/totp/verify';
 
 type Props = {
   open: boolean;
