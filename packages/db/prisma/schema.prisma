@@ -19,7 +19,7 @@ enum Role {
 // `id` is the wallet address.
 model User {
   id      String @id @default(cuid())
-  chainId Int
+  chainId Int    @default(1) // 1 = Ethereum mainnet
   role    Role   @default(USER)
 
   // siwe-2fa-next-auth: pending WebAuthn challenge
